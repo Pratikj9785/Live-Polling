@@ -1,0 +1,17 @@
+# VCS
+.git
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Monorepo client (server-only runtime)
+client/
+
+# Env and local
+.env*
+.vercel/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
