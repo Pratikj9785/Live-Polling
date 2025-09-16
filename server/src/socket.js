@@ -4,13 +4,26 @@ import { createPoll } from "./models.js";
 
 export function initSocket(httpServer, corsOrigin = "*") {
   const io = new Server(httpServer, {
-    cors: { origin: corsOrigin, methods: ["GET", "POST"] },
+    cors: {
+      origin: corsOrigin,
+      methods: ["GET", "POST"],
+      credentials: false,
+    },
+    transports: ["websocket", "polling"],
+    allowUpgrades: true,
+    pingInterval: 20000,
+    pingTimeout: 25000,
   });
 
   // ---- Global State ----
   const participants = new Map(); // socket.id -> { name, role }
   let activePoll = null;
   const pollHistory = [];
+
+  // Log connection transport
+  io.on("connection", (socket) => {
+    console.log("Client connected:", socket.id, "via", socket.conn.transport.name);
+  });
 
   // ---- Helpers ----
   function broadcastParticipants() {
