@@ -148,21 +148,6 @@ Options:
   - `npm run build`: production bundle
   - `npm run preview`: preview static build
 
-### Submission Guidelines
-- **Deadline**: 16/09/2025, EOD
-- **Submission Method**: Email only
-- **Email To**: `pallavi@intervue.info`
-- **Email Subject**: `SDE INTERN ASSIGNMENT SUBMISSION`
-
-Include the following in your email body:
-```
-Name: [Your Full Name]
-Phone Number: [Your Contact Number]
-Email ID: [Your Email Address]
-LinkedIn URL: [Your LinkedIn Profile Link]
-APPLIED VIA GOOGLE FORM: YES/NO
-Assignment Link: [Hosted/Deployed Link]
-```
 
 ### License
 MIT
