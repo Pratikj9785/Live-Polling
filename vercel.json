@@ -1,0 +1,9 @@
+{
+  "projects": [],
+  "buildCommand": null,
+  "installCommand": null,
+  "outputDirectory": null,
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/server/src/index.js" }
+  ]
+}
