@@ -2,19 +2,16 @@ import React from "react";
 
 export default function Participants({ list, onKick }) {
   return (
-    <div style={{ marginTop: 16 }}>
-      <h4>Participants</h4>
-      <ul>
+    <div className="card">
+      <h4 className="text-base font-semibold text-gray-900">Participants</h4>
+      <ul className="mt-2 divide-y divide-gray-200">
         {list.map((p) => (
-          <li
-            key={p.id}
-            style={{ display: "flex", gap: 8, alignItems: "center" }}
-          >
-            <span>
-              {p.name} <small>({p.role})</small>
+          <li key={p.id} className="flex items-center justify-between py-2 text-sm">
+            <span className="text-gray-800">
+              {p.name} <span className="text-gray-500">({p.role})</span>
             </span>
             {p.role === "student" && onKick && (
-              <button onClick={() => onKick(p.id)}>Kick</button>
+              <button className="btn px-3 py-1 text-xs" onClick={() => onKick(p.id)}>Kick</button>
             )}
           </li>
         ))}

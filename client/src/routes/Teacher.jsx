@@ -93,83 +93,102 @@ export default function Teacher() {
   const kick = (id) => socket.emit("participants:kick", { targetId: id });
 
   return (
-    <section style={{ display: "grid", gap: 16, marginTop: 16 }}>
-      <h3>Ask a Question</h3>
-      <textarea
-        value={question}
-        onChange={(e) => setQuestion(e.target.value)}
-        placeholder="Type your question"
-      />
-      <div>
-        Duration:
-        <select
-          value={duration}
-          onChange={(e) => setDuration(Number(e.target.value))}
-        >
-          {DURS.map((d) => (
-            <option key={d} value={d}>
-              {d}s
-            </option>
-          ))}
-        </select>
-      </div>
-      <div style={{ display: "grid", gap: 8 }}>
-        {options.map((o, idx) => (
-          <div
-            key={o.id}
-            style={{ display: "flex", gap: 8, alignItems: "center" }}
-          >
-            <input
-              value={o.text}
-              onChange={(e) =>
-                setOptions((prev) =>
-                  prev.map((p) =>
-                    p.id === o.id ? { ...p, text: e.target.value } : p
-                  )
-                )
-              }
-              placeholder={`Option ${idx + 1}`}
+    <section className="mt-4 grid gap-6">
+      <div className="card">
+        <h3 className="text-lg font-semibold text-gray-900">Ask a Question</h3>
+        <div className="mt-4 grid gap-4">
+          <div>
+            <label className="mb-1 block">Question</label>
+            <textarea
+              className="min-h-24"
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              placeholder="Type your question"
             />
-            <button
-              onClick={() => setCorrect(o.id)}
-              style={{ background: o.isCorrect ? "#c8f7c5" : undefined }}
+          </div>
+          <div>
+            <label className="mb-1 block">Duration</label>
+            <select
+              value={duration}
+              onChange={(e) => setDuration(Number(e.target.value))}
+              className="max-w-xs"
             >
-              Correct
+              {DURS.map((d) => (
+                <option key={d} value={d}>
+                  {d}s
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="grid gap-3">
+            <label className="mb-1 block">Options</label>
+            {options.map((o, idx) => (
+              <div key={o.id} className="flex items-center gap-3">
+                <input
+                  value={o.text}
+                  onChange={(e) =>
+                    setOptions((prev) =>
+                      prev.map((p) =>
+                        p.id === o.id ? { ...p, text: e.target.value } : p
+                      )
+                    )
+                  }
+                  placeholder={`Option ${idx + 1}`}
+                  className="flex-1"
+                />
+                <button
+                  onClick={() => setCorrect(o.id)}
+                  className={`btn ${o.isCorrect ? "bg-emerald-600 hover:bg-emerald-500" : ""}`}
+                >
+                  Mark Correct
+                </button>
+              </div>
+            ))}
+            <div>
+              <button className="btn" onClick={addOption}>+ Add Option</button>
+            </div>
+          </div>
+          <div>
+            <button className="btn" onClick={ask} disabled={!canAsk}>
+              Ask Question
             </button>
           </div>
-        ))}
-        <button onClick={addOption}>+ Add Option</button>
-      </div>
-      <button onClick={ask} disabled={!canAsk}>
-        Ask Question
-      </button>
-
-      {activePoll && activePoll.state === "active" && (
-        <div style={{ marginTop: 12 }}>
-          <strong>Active:</strong> {activePoll.question}
-          <ul>
-            {activePoll.options.map((o) => (
-              <li key={o.id}>
-                {o.text} — {liveCounts[o.id] || 0}
-              </li>
-            ))}
-          </ul>
         </div>
-      )}
+      </div>
 
-      {activePoll && activePoll.state === "closed" && (
-        <Results poll={activePoll} />
+      {activePoll && (
+        <div className="grid gap-4">
+          {activePoll.state === "active" && (
+            <div className="card">
+              <div className="flex items-center justify-between">
+                <h4 className="text-base font-semibold text-gray-900">Active</h4>
+                <span className="text-xs text-gray-500">Live</span>
+              </div>
+              <p className="mt-1 text-sm text-gray-700">{activePoll.question}</p>
+              <ul className="mt-3 grid gap-2">
+                {activePoll.options.map((o) => (
+                  <li key={o.id} className="flex items-center justify-between text-sm">
+                    <span className="text-gray-700">{o.text}</span>
+                    <span className="font-semibold text-gray-900">{liveCounts[o.id] || 0}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {activePoll.state === "closed" && <Results poll={activePoll} />}
+        </div>
       )}
 
       <Participants list={participants} onKick={kick} />
 
-      <div>
-        <h4>Poll History</h4>
-        <ul>
+      <div className="card">
+        <h4 className="text-base font-semibold text-gray-900">Poll History</h4>
+        <ul className="mt-2 grid gap-1 text-sm text-gray-700">
           {history.map((h) => (
-            <li key={h.id}>
-              {new Date(h.results?.closedAt || Date.now()).toLocaleTimeString()}{" "}
-              — {h.question}
+            <li key={h.id} className="flex items-center justify-between">
+              <span>{h.question}</span>
+              <span className="text-gray-500">{new Date(h.results?.closedAt || Date.now()).toLocaleTimeString()}</span>
             </li>
           ))}
         </ul>

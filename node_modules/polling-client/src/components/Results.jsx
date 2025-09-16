@@ -10,15 +10,21 @@ export default function Results({ poll }) {
   if (poll.state === "active") {
     const total = Object.values(liveCounts || {}).reduce((a, b) => a + b, 0);
     return (
-      <div style={{ marginTop: 16 }}>
-        <h4>Live Results</h4>
-        <ul>
+      <div className="card">
+        <h4 className="text-base font-semibold text-gray-900">Live Results</h4>
+        <ul className="mt-2 grid gap-2">
           {poll.options.map((o) => {
             const n = liveCounts[o.id] || 0;
             const pct = total ? Math.round((n / total) * 100) : 0;
             return (
-              <li key={o.id} style={{ listStyle: "none", margin: "6px 0" }}>
-                {o.text} — {n} votes ({pct}%)
+              <li key={o.id} className="text-sm text-gray-800">
+                <div className="mb-1 flex items-center justify-between">
+                  <span>{o.text}</span>
+                  <span className="font-semibold">{n} ({pct}%)</span>
+                </div>
+                <div className="progress">
+                  <div className="bar" style={{ width: `${pct}%` }} />
+                </div>
               </li>
             );
           })}
@@ -34,19 +40,24 @@ export default function Results({ poll }) {
       0
     );
     return (
-      <div style={{ marginTop: 16 }}>
-        <h4>Final Results</h4>
-        <ul>
+      <div className="card">
+        <h4 className="text-base font-semibold text-gray-900">Final Results</h4>
+        <ul className="mt-2 grid gap-2">
           {poll.options.map((o) => {
             const n = poll.results.counts[o.id] || 0;
             const pct = total ? Math.round((n / total) * 100) : 0;
             const isCorrect = poll.results.correctOptionId === o.id;
             return (
-              <li key={o.id} style={{ listStyle: "none", margin: "6px 0" }}>
-                <span style={{ fontWeight: isCorrect ? "bold" : "normal" }}>
-                  {o.text}
-                </span>{" "}
-                — {n} votes ({pct}%) {isCorrect ? "✓" : ""}
+              <li key={o.id} className="text-sm">
+                <div className="mb-1 flex items-center justify-between">
+                  <span className={`font-medium ${isCorrect ? "text-emerald-700" : "text-gray-800"}`}>
+                    {o.text} {isCorrect ? "✓" : ""}
+                  </span>
+                  <span className="font-semibold text-gray-900">{n} ({pct}%)</span>
+                </div>
+                <div className="progress">
+                  <div className={`bar ${isCorrect ? "bg-emerald-600" : "bg-indigo-600"}`} style={{ width: `${pct}%` }} />
+                </div>
               </li>
             );
           })}

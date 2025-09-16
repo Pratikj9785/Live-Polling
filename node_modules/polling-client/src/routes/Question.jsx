@@ -59,42 +59,62 @@ export default function Question() {
 
   if (waiting && !activePoll)
     return (
-      <p style={{ marginTop: 24 }}>Waiting for teacher to ask a question…</p>
+      <div className="mt-6 rounded-md border border-dashed border-gray-300 bg-gray-50 p-6 text-center text-sm text-gray-600">
+        Waiting for teacher to ask a question…
+      </div>
     );
 
-  if (!activePoll) return <p style={{ marginTop: 24 }}>No active question.</p>;
+  if (!activePoll)
+    return (
+      <div className="mt-6 rounded-md border border-dashed border-gray-300 bg-gray-50 p-6 text-center text-sm text-gray-600">
+        No active question.
+      </div>
+    );
 
   const isClosed = activePoll.state === "closed";
 
   return (
-    <section style={{ marginTop: 24 }}>
-      <h3>{activePoll.question}</h3>
-      {!isClosed && <Countdown deadline={activePoll.deadline} />}
-
-      {!isClosed && !answered && (
-        <div style={{ display: "grid", gap: 8, marginTop: 12 }}>
-          {activePoll.options.map((o) => (
-            <OptionButton key={o.id} onClick={() => choose(o.id)}>
-              {o.text}
-            </OptionButton>
-          ))}
+    <section className="mt-6 grid gap-4">
+      <div className="card">
+        <div className="flex items-start justify-between gap-3">
+          <h3 className="text-lg font-semibold text-gray-900">{activePoll.question}</h3>
+          {!isClosed && <Countdown deadline={activePoll.deadline} />}
         </div>
-      )}
 
-      {!isClosed && answered && (
-        <div>
-          <p>Answer submitted. Watching live results…</p>
-          <ul>
+        {!isClosed && !answered && (
+          <div className="mt-4 grid gap-2">
             {activePoll.options.map((o) => (
-              <li key={o.id}>
-                {o.text} — {liveCounts[o.id] || 0}
-              </li>
+              <OptionButton key={o.id} onClick={() => choose(o.id)}>
+                {o.text}
+              </OptionButton>
             ))}
-          </ul>
-        </div>
-      )}
+          </div>
+        )}
 
-      {isClosed && <Results poll={activePoll} />}
+        {!isClosed && answered && (
+          <div className="mt-3">
+            <p className="text-sm text-gray-700">Answer submitted. Watching live results…</p>
+            <ul className="mt-2 grid gap-2">
+              {activePoll.options.map((o) => (
+                <li key={o.id} className="text-sm text-gray-800">
+                  <div className="mb-1 flex items-center justify-between">
+                    <span>{o.text}</span>
+                    <span className="font-semibold">{liveCounts[o.id] || 0}</span>
+                  </div>
+                  <div className="progress">
+                    <div
+                      className="bar"
+                      style={{ width: `${Math.min(100, Math.round(((liveCounts[o.id] || 0) / Math.max(1, Object.values(liveCounts || {}).reduce((a,b)=>a+b,0))) * 100))}%` }}
+                    />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {isClosed && <Results poll={activePoll} />}
+      </div>
     </section>
   );
 }

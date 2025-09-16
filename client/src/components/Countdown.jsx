@@ -8,5 +8,10 @@ export default function Countdown({ deadline }) {
     return () => clearInterval(t);
   }, [deadline]);
   const s = Math.ceil(ms / 1000);
-  return <div>Time left: {s}s</div>;
+  return (
+    <div className="inline-flex items-center gap-2 rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700">
+      <span className="h-2 w-2 rounded-full bg-indigo-500"></span>
+      Time left: {s}s
+    </div>
+  );
 }

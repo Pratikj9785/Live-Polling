@@ -35,10 +35,14 @@ export default function Student() {
   };
 
   return (
-    <section style={{ marginTop: 32 }}>
-      <h3>Enter Name</h3>
-      <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Your name" />
-      <button onClick={onContinue}>Continue</button>
+    <section className="mt-8 grid place-items-center">
+      <div className="card w-full max-w-md">
+        <h3 className="text-lg font-semibold text-gray-900">Enter Name</h3>
+        <div className="mt-3 grid gap-3">
+          <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Your name" />
+          <button className="btn" onClick={onContinue}>Continue</button>
+        </div>
+      </div>
     </section>
   );
 }
